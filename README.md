@@ -101,7 +101,7 @@ Obtain the Stream ID from the Microsoft Defender for Cloud Apps portal:
 
 ### Deploy the Solution
 
-1. Deploy the ARM template (`MainTemplate.json`) to your Azure subscription:
+1. Deploy the ARM template [MainTemplate.json](https://github.com/mariocuomo/Sentinel-Cloud-Discovery-Connector/blob/main/MainTemplate.json) to your Azure subscription:
    - Navigate to your resource group in the Azure Portal
    - Click **Create** > **Template deployment (deploy using custom templates)**
    - Upload the `MainTemplate.json` file
