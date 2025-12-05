@@ -19,6 +19,9 @@ This solution provides a custom Sentinel Codeless Connector Framework (CCF) data
 
 The connector ingests the following data fields into the `CloudDiscoveryData_CL` table:
 
+<div align="center">
+
+
 | Field Name | Type | Description |
 |------------|------|-------------|
 | TimeGenerated | datetime | Timestamp when the record was generated |
@@ -35,6 +38,11 @@ The connector ingests the following data fields into the `CloudDiscoveryData_CL`
 | uploadNetworkTrafficInBytes | long | Upload traffic volume in bytes |
 | downloadNetworkTrafficInBytes | long | Download traffic volume in bytes |
 | deviceCount | int | Number of devices accessing the application |
+
+<img src="https://github.com/mariocuomo/Sentinel-Cloud-Discovery-Connector/blob/main/img/tableschema.png"> </img>
+
+</div>
+
 
 ## Prerequisites
 
