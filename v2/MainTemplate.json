@@ -1,0 +1,658 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "author": "Mario Cuomo",
+    "comments": "Solution template for a Demo"
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "minLength": 1,
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Not used, but needed to pass arm-ttk test `Location-Should-Not-Be-Hardcoded`.  We instead use the `workspace-location` which is derived from the LA workspace"
+      }
+    },
+    "workspace-location": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "[concat('Region to deploy solution resources -- separate from location selection',parameters('location'))]"
+      }
+    },
+    "workspace": {
+      "defaultValue": "",
+      "type": "string",
+      "metadata": {
+        "description": "Workspace name for Log Analytics where Microsoft Sentinel is setup"
+      }
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "resource group name where Microsoft Sentinel is setup"
+      }
+    },
+    "subscription": {
+      "type": "string",
+      "defaultValue": "[last(split(subscription().id, '/'))]",
+      "metadata": {
+        "description": "subscription id where Microsoft Sentinel is setup"
+      }
+    }
+  },
+  "variables": {
+    "_solutionName": "Demo",
+    "_solutionVersion": "1.0.0",
+    "solutionId": "test.test",
+    "_solutionId": "[variables('solutionId')]",
+    "workspaceResourceId": "[resourceId('microsoft.OperationalInsights/Workspaces', parameters('workspace'))]",
+    "dataConnectorCCPVersion": "1.0.0",
+    "_dataConnectorContentIdConnectorDefinition1": "MDACloudDiscoveryCCF",
+    "dataConnectorTemplateNameConnectorDefinition1": "[concat(parameters('workspace'),'-dc-',uniquestring(variables('_dataConnectorContentIdConnectorDefinition1')))]",
+    "_dataConnectorContentIdConnections1": "MDACloudDiscoveryCCFConnections",
+    "dataConnectorTemplateNameConnections1": "[concat(parameters('workspace'),'-dc-',uniquestring(variables('_dataConnectorContentIdConnections1')))]",
+    "dataCollectionEndpointId1": "[concat('/subscriptions/',parameters('subscription'),'/resourceGroups/',parameters('resourceGroupName'),'/providers/Microsoft.Insights/dataCollectionEndpoints/',parameters('workspace'))]",
+    "blanks": "[replace('b', 'b', '')]",
+    "_solutioncontentProductId": "[concat(take(variables('_solutionId'),50),'-','sl','-', uniqueString(concat(variables('_solutionId'),'-','Solution','-',variables('_solutionId'),'-', variables('_solutionVersion'))))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.OperationalInsights/workspaces/providers/contentTemplates",
+      "apiVersion": "2023-04-01-preview",
+      "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/', variables('dataConnectorTemplateNameConnectorDefinition1'), variables('dataConnectorCCPVersion'))]",
+      "location": "[parameters('workspace-location')]",
+      "dependsOn": [
+        "[extensionResourceId(resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace')), 'Microsoft.SecurityInsights/contentPackages', variables('_solutionId'))]"
+      ],
+      "properties": {
+        "contentId": "[variables('_dataConnectorContentIdConnectorDefinition1')]",
+        "displayName": "MDA Cloud Discovery",
+        "contentKind": "DataConnector",
+        "mainTemplate": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "[variables('dataConnectorCCPVersion')]",
+          "parameters": {},
+          "variables": {},
+          "resources": [
+            {
+              "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/',variables('_dataConnectorContentIdConnectorDefinition1'))]",
+              "apiVersion": "2022-09-01-preview",
+              "type": "Microsoft.OperationalInsights/workspaces/providers/dataConnectorDefinitions",
+              "location": "[parameters('workspace-location')]",
+              "kind": "Customizable",
+              "properties": {
+                "connectorUiConfig": {
+                  "id": "MDACloudDiscoveryCCF",
+                  "title": "MDA Cloud Discovery",
+                  "publisher": "Mario Cuomo",
+                  "descriptionMarkdown": "The MDA Cloud Discovery connector allows the user to ingest MDA Cloud Discovery data into Microsoft Sentinel using the CCF framework. It uses the Microsoft Defender for Cloud Apps Graph API (preview) to pull data.",
+                  "graphQueriesTableName": "CloudDiscoveryData_CL",
+                  "graphQueries": [
+                    {
+                      "metricName": "Total Cloud Discovery Events received",
+                      "legend": "Cloud Discovery Events",
+                      "baseQuery": "CloudDiscoveryData_CL"
+                    }
+                  ],
+                  "sampleQueries": [
+                    {
+                      "description": "Get Sample of Cloud Discovery events",
+                      "query": "{{graphQueriesTableName}}\n | take 10"
+                    }
+                  ],
+                  "dataTypes": [
+                    {
+                      "name": "CloudDiscoveryData_CL",
+                      "lastDataReceivedQuery": "CloudDiscoveryData_CL\n | where TimeGenerated > ago(7d) | summarize Time = max(TimeGenerated)\n | where isnotempty(Time)"
+                    }
+                  ],
+                  "connectivityCriteria": [
+                    {
+                      "type": "HasDataConnectors"
+                    }
+                  ],
+                  "availability": {
+                    "isPreview": false
+                  },
+                  "permissions": {
+                    "resourceProvider": [
+                      {
+                        "provider": "Microsoft.OperationalInsights/workspaces",
+                        "permissionsDisplayText": "Read and Write permissions are required.",
+                        "providerDisplayName": "Workspace",
+                        "scope": "Workspace",
+                        "requiredPermissions": {
+                          "write": true,
+                          "read": true,
+                          "delete": true
+                        }
+                      }
+                    ]
+                  },
+                  "instructionSteps": [
+                    {
+                      "title": "STEP 1 - Create an Enterpise App in Entra ID",
+                      "description": "Create an Enterprise App in Entra ID with the required API permissions to access the Microsoft Defender for Cloud Apps Graph API. Follow the [Microsoft Documentation](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/add-application-portal) for guidance on this step. The required API permissions is _CloudApp-Discovery.Read.All_ (application type)."
+                    },
+                    {
+                      "title": "STEP 2 - Add Stream Connections",
+                      "description": "To enable the MDA Cloud Discovery connector for Microsoft Sentinel, click to add a stream, fill the form with your credentials, Stream ID and lookback period, then click to Connect.",
+                      "instructions": [
+                        {
+                          "type": "DataConnectorsGrid",
+                          "parameters": {
+                            "mapping": [
+                              {
+                                "columnName": "Stream ID",
+                                "columnValue": "properties.request.apiEndpoint"
+                              }
+                            ],
+                            "menuItems": [
+                              "DeleteConnector"
+                            ]
+                          }
+                        },
+                        {
+                          "type": "ContextPane",
+                          "parameters": {
+                            "isPrimary": true,
+                            "label": "Add stream",
+                            "title": "Add stream",
+                            "subtitle": "Add MDA Cloud Discovery stream",
+                            "contextPaneType": "DataConnectorsContextPane",
+                            "instructionSteps": [
+                              {
+                                "instructions": [
+                                  {
+                                    "type": "Textbox",
+                                    "parameters": {
+                                      "label": "Client ID",
+                                      "placeholder": "Enter your Client ID",
+                                      "type": "text",
+                                      "name": "ClientId"
+                                    }
+                                  },
+                                  {
+                                    "type": "Textbox",
+                                    "parameters": {
+                                      "label": "Client Secret",
+                                      "placeholder": "Enter your Client Secret",
+                                      "type": "password",
+                                      "name": "ClientSecret"
+                                    }
+                                  },
+                                  {
+                                    "type": "Textbox",
+                                    "parameters": {
+                                      "label": "Stream ID",
+                                      "placeholder": "Enter your StreamID",
+                                      "type": "text",
+                                      "name": "streamid"
+                                    }
+                                  },
+                                  {
+                                    "type": "Dropdown",
+                                    "parameters": {
+                                      "label": "Select the lookback period for data ingestion",
+                                      "name": "lookback",
+                                      "options": [
+                                        {
+                                          "key": "7",
+                                          "text": "7 Days"
+                                        },
+                                        {
+                                          "key": "30",
+                                          "text": "30 Days"
+                                        },
+                                        {
+                                          "key": "90",
+                                          "text": "90 Days"
+                                        }
+                                      ],
+                                      "placeholder": "Select the lookback period for data ingestion",
+                                      "isMultiSelect": false,
+                                      "required": true,
+                                      "defaultAllSelected": false
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/',concat('DataConnector-', variables('_dataConnectorContentIdConnectorDefinition1')))]",
+              "apiVersion": "2022-01-01-preview",
+              "type": "Microsoft.OperationalInsights/workspaces/providers/metadata",
+              "properties": {
+                "parentId": "[extensionResourceId(resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace')), 'Microsoft.SecurityInsights/dataConnectorDefinitions', variables('_dataConnectorContentIdConnectorDefinition1'))]",
+                "contentId": "[variables('_dataConnectorContentIdConnectorDefinition1')]",
+                "kind": "DataConnector",
+                "version": "[variables('dataConnectorCCPVersion')]",
+                "source": {
+                  "sourceId": "[variables('_solutionId')]",
+                  "name": "[variables('_solutionName')]",
+                  "kind": "Solution"
+                },
+                "author": {
+                  "name": "Mario Cuomo"
+                },
+                "support": {
+                  "name": "Mario Cuomo",
+                  "email": "test@example.com",
+                  "tier": "Partner",
+                  "link": "https://www.example.com"
+                },
+                "dependencies": {
+                  "criteria": [
+                    {
+                      "version": "[variables('dataConnectorCCPVersion')]",
+                      "contentId": "[variables('_dataConnectorContentIdConnections1')]",
+                      "kind": "ResourcesDataConnector"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "CloudDiscoverDCR",
+              "apiVersion": "2022-06-01",
+              "type": "Microsoft.Insights/dataCollectionRules",
+              "location": "[parameters('workspace-location')]",
+              "kind": "[variables('blanks')]",
+              "properties": {
+                "dataCollectionEndpointId": "[variables('dataCollectionEndpointId1')]",
+                "streamDeclarations": {
+                  "Custom-CloudDiscoveryData": {
+                    "columns": [
+                      {
+                        "name": "id",
+                        "type": "string"
+                      },
+                      {
+                        "name": "displayName",
+                        "type": "string"
+                      },
+                      {
+                        "name": "tags",
+                        "type": "dynamic"
+                      },
+                      {
+                        "name": "riskScore",
+                        "type": "int"
+                      },
+                      {
+                        "name": "lastSeenDateTime",
+                        "type": "datetime"
+                      },
+                      {
+                        "name": "domains",
+                        "type": "dynamic"
+                      },
+                      {
+                        "name": "category",
+                        "type": "string"
+                      },
+                      {
+                        "name": "userCount",
+                        "type": "int"
+                      },
+                      {
+                        "name": "ipAddressCount",
+                        "type": "int"
+                      },
+                      {
+                        "name": "transactionCount",
+                        "type": "int"
+                      },
+                      {
+                        "name": "uploadNetworkTrafficInBytes",
+                        "type": "long"
+                      },
+                      {
+                        "name": "downloadNetworkTrafficInBytes",
+                        "type": "long"
+                      },
+                      {
+                        "name": "deviceCount",
+                        "type": "int"
+                      }
+                    ]
+                  }
+                },
+                "destinations": {
+                  "logAnalytics": [
+                    {
+                      "workspaceResourceId": "[variables('workspaceResourceId')]",
+                      "name": "clv2ws1"
+                    }
+                  ]
+                },
+                "dataFlows": [
+                  {
+                    "streams": [
+                      "Custom-CloudDiscoveryData"
+                    ],
+                    "destinations": [
+                      "clv2ws1"
+                    ],
+                    "transformKql": "source | extend TimeGenerated = now()",
+                    "outputStream": "Custom-CloudDiscoveryData_CL"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "CloudDiscoveryData_CL",
+              "apiVersion": "2022-10-01",
+              "type": "Microsoft.OperationalInsights/workspaces/tables",
+              "properties": {
+                "schema": {
+                  "name": "CloudDiscoveryData_CL",
+                  "columns": [
+                    {
+                      "name": "TimeGenerated",
+                      "type": "datetime"
+                    },
+                    {
+                      "name": "id",
+                      "type": "string"
+                    },
+                    {
+                      "name": "displayName",
+                      "type": "string"
+                    },
+                    {
+                      "name": "tags",
+                      "type": "dynamic"
+                    },
+                    {
+                      "name": "riskScore",
+                      "type": "int"
+                    },
+                    {
+                      "name": "lastSeenDateTime",
+                      "type": "datetime"
+                    },
+                    {
+                      "name": "domains",
+                      "type": "dynamic"
+                    },
+                    {
+                      "name": "category",
+                      "type": "string"
+                    },
+                    {
+                      "name": "userCount",
+                      "type": "int"
+                    },
+                    {
+                      "name": "ipAddressCount",
+                      "type": "int"
+                    },
+                    {
+                      "name": "transactionCount",
+                      "type": "int"
+                    },
+                    {
+                      "name": "uploadNetworkTrafficInBytes",
+                      "type": "long"
+                    },
+                    {
+                      "name": "downloadNetworkTrafficInBytes",
+                      "type": "long"
+                    },
+                    {
+                      "name": "deviceCount",
+                      "type": "int"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "packageKind": "Solution",
+        "packageVersion": "[variables('_solutionVersion')]",
+        "packageName": "[variables('_solutionName')]",
+        "contentProductId": "[concat(take(variables('_solutionId'), 50),'-','dc','-', uniqueString(concat(variables('_solutionId'),'-','DataConnector','-',variables('_dataConnectorContentIdConnectorDefinition1'),'-', variables('dataConnectorCCPVersion'))))]",
+        "packageId": "[variables('_solutionId')]",
+        "contentSchemaVersion": "1.0.0",
+        "version": "[variables('dataConnectorCCPVersion')]"
+      }
+    },
+    {
+      "type": "Microsoft.OperationalInsights/workspaces/providers/contentTemplates",
+      "apiVersion": "2023-04-01-preview",
+      "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/', variables('dataConnectorTemplateNameConnections1'), variables('dataConnectorCCPVersion'))]",
+      "location": "[parameters('workspace-location')]",
+      "dependsOn": [
+        "[extensionResourceId(resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace')), 'Microsoft.SecurityInsights/contentPackages', variables('_solutionId'))]"
+      ],
+      "properties": {
+        "contentId": "[variables('_dataConnectorContentIdConnections1')]",
+        "displayName": "MDA Cloud Discovery",
+        "contentKind": "ResourcesDataConnector",
+        "mainTemplate": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "[variables('dataConnectorCCPVersion')]",
+          "parameters": {
+            "ClientSecret": {
+              "defaultValue": "",
+              "type": "securestring",
+              "minLength": 1,
+              "metadata": {
+                "description": "Client Secret for authentication"
+              }
+            },
+            "ClientId": {
+              "defaultValue": "",
+              "type": "string",
+              "minLength": 1,
+              "metadata": {
+                "description": "Client ID for authentication"
+              }
+            },
+            "streamid": {
+              "defaultValue": "",
+              "type": "string",
+              "minLength": 1,
+              "metadata": {
+                "description": "Stream ID from MDA Cloud Discovery"
+              }
+            },
+            "lookback": {
+              "defaultValue": ["7"],
+              "type": "array",
+              "minLength": 1,
+              "metadata": {
+                "description": "Lookback period for data ingestion"
+              }
+            },
+            "connectorDefinitionName": {
+              "defaultValue": "MDACloudDiscoveryCCF",
+              "type": "string",
+              "minLength": 1,
+              "metadata": {
+                "description": "Connector definition name"
+              }
+            },
+            "workspace-template": {
+              "defaultValue": "[parameters('workspace')]",
+              "type": "string",
+              "metadata": {
+                "description": "Workspace name"
+              }
+            },
+            "workspace-location": {
+              "defaultValue": "[parameters('workspace-location')]",
+              "type": "string",
+              "metadata": {
+                "description": "Workspace location"
+              }
+            },
+            "dcrConfig": {
+              "defaultValue": {
+                "dataCollectionEndpoint": "data collection Endpoint",
+                "dataCollectionRuleImmutableId": "data collection rule immutableId"
+              },
+              "type": "object",
+              "metadata": {
+                "description": "Data collection rule configuration"
+              }
+            }
+          },
+          "variables": {
+            "_dataConnectorContentIdConnections1": "[variables('_dataConnectorContentIdConnections1')]"
+          },
+          "resources": [
+            {
+              "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/',concat('DataConnector-', variables('_dataConnectorContentIdConnections1')))]",
+              "apiVersion": "2022-01-01-preview",
+              "type": "Microsoft.OperationalInsights/workspaces/providers/metadata",
+              "properties": {
+                "parentId": "[extensionResourceId(resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace')), 'Microsoft.SecurityInsights/dataConnectors', variables('_dataConnectorContentIdConnections1'))]",
+                "contentId": "[variables('_dataConnectorContentIdConnections1')]",
+                "kind": "ResourcesDataConnector",
+                "version": "[variables('dataConnectorCCPVersion')]",
+                "source": {
+                  "sourceId": "[variables('_solutionId')]",
+                  "name": "[variables('_solutionName')]",
+                  "kind": "Solution"
+                },
+                "author": {
+                  "name": "Mario Cuomo"
+                },
+                "support": {
+                  "name": "Mario Cuomo",
+                  "email": "test@example.com",
+                  "tier": "Partner",
+                  "link": "https://www.example.com"
+                }
+              }
+            },
+            {
+              "name": "[[concat(parameters('workspace-template'),'/Microsoft.SecurityInsights/', 'MDACloudDiscovery', uniqueString(parameters('streamid')))]",
+              "apiVersion": "2023-02-01-preview",
+              "type": "Microsoft.OperationalInsights/workspaces/providers/dataConnectors",
+              "location": "[[parameters('workspace-location')]",
+              "kind": "RestApiPoller",
+              "properties": {
+                "connectorDefinitionName": "MDACloudDiscoveryCCF",
+                "dataType": "CloudDiscoveryData_CL",
+                "dcrConfig": {
+                  "streamName": "Custom-CloudDiscoveryData",
+                  "dataCollectionEndpoint": "[[parameters('dcrConfig').dataCollectionEndpoint]",
+                  "dataCollectionRuleImmutableId": "[[parameters('dcrConfig').dataCollectionRuleImmutableId]"
+                },
+                "auth": {
+                  "type": "OAuth2",
+                  "ClientId": "[[parameters('ClientId')]",
+                  "ClientSecret": "[[parameters('ClientSecret')]",
+                  "tokenEndpoint": "[[concat('https://login.microsoftonline.com/', tenant().tenantId, '/oauth2/v2.0/token')]",
+                  "tokenEndpointHeaders": {
+                    "Accept": "application/json",
+                    "Content-Type": "application/x-www-form-urlencoded"
+                  },
+                  "TokenEndpointQueryParameters": {},
+                  "scope": "openid offline_access https://graph.microsoft.com/.default",
+                  "grantType": "client_credentials"
+                },
+                "request": {
+                  "apiEndpoint": "[[concat('https://graph.microsoft.com/beta/security/dataDiscovery/cloudAppDiscovery/uploadedStreams/', parameters('streamid'), '/microsoft.graph.security.aggregatedAppsDetails(period=duration''P', parameters('lookback')[0], 'D'')')]",
+                  "httpMethod": "Get",
+                  "queryWindowInMin": 5,
+                  "queryTimeFormat": "yyyy-MM-ddTHH:mm:ssZ",
+                  "rateLimitQps": 1,
+                  "retryCount": 3,
+                  "timeoutInSeconds": 60,
+                  "headers": {
+                    "Content-Type": "application/json"
+                  },
+                  "queryParametersTemplate": "{\"limit\": 1000, \"start_time\": \"{_QueryWindowStartTime}\", \"end_time\": \"{_QueryWindowEndTime}\" }",
+                  "isPostPayloadJson": true
+                },
+                "response": {
+                  "format": "json",
+                  "eventsJsonPaths": [
+                    "$.value"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "packageKind": "Solution",
+        "packageVersion": "[variables('_solutionVersion')]",
+        "packageName": "[variables('_solutionName')]",
+        "contentProductId": "[concat(take(variables('_solutionId'), 50),'-','rdc','-', uniqueString(concat(variables('_solutionId'),'-','ResourcesDataConnector','-',variables('_dataConnectorContentIdConnections1'),'-', variables('dataConnectorCCPVersion'))))]",
+        "packageId": "[variables('_solutionId')]",
+        "contentSchemaVersion": "1.0.0",
+        "version": "[variables('dataConnectorCCPVersion')]"
+      }
+    },
+    {
+      "type": "Microsoft.OperationalInsights/workspaces/providers/contentPackages",
+      "apiVersion": "2023-04-01-preview",
+      "location": "[parameters('workspace-location')]",
+      "properties": {
+        "version": "1.0.0",
+        "kind": "Solution",
+        "contentSchemaVersion": "1.0.0",
+        "displayName": "Demo",
+        "publisherDisplayName": "Mario Cuomo",
+        "descriptionHtml": "<p><strong>Note:</strong> Please refer to the following before installing the solution:</p>\n<p>• Review the solution <a href=\"https://github.com/Azure/Azure-Sentinel\">Release Notes</a></p>\n<p>• There may be <a href=\"https://aka.ms/sentinelsolutionsknownissues\">known issues</a> pertaining to this Solution, please refer to them before installing.</p>\n<p>A demo solution for CCF connector</p>\n<p><strong>Data Connectors:</strong> 1</p>\n<p><a href=\"https://aka.ms/azuresentinel\">Learn more about Microsoft Sentinel</a> | <a href=\"https://aka.ms/azuresentinelsolutionsdoc\">Learn more about Solutions</a></p>\n",
+        "contentKind": "Solution",
+        "contentProductId": "[variables('_solutioncontentProductId')]",
+        "id": "[variables('_solutioncontentProductId')]",
+        "icon": "<img src=\"https://raw.githubusercontent.com/Azure/Azure-Sentinel/master/Logos/1password.svg\" width=\"75px\" height=\"75px\">",
+        "contentId": "[variables('_solutionId')]",
+        "parentId": "[variables('_solutionId')]",
+        "source": {
+          "kind": "Solution",
+          "name": "Mario Cuomo",
+          "sourceId": "[variables('_solutionId')]"
+        },
+        "author": {
+          "name": "Mario Cuomo"
+        },
+        "support": {
+          "name": "Mario Cuomo",
+          "email": "test@example.com",
+          "tier": "Partner",
+          "link": "https://www.example.com"
+        },
+        "dependencies": {
+          "operator": "AND",
+          "criteria": [
+            {
+              "kind": "DataConnector",
+              "contentId": "[variables('_dataConnectorContentIdConnections1')]",
+              "version": "[variables('dataConnectorCCPVersion')]"
+            }
+          ]
+        },
+        "firstPublishDate": "2025-04-28",
+        "providers": [
+          "test"
+        ],
+        "categories": {
+          "domains": [
+            "Security - Network"
+          ]
+        }
+      },
+      "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/', variables('_solutionId'))]"
+    }
+  ],
+  "outputs": {}
+}
