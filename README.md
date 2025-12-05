@@ -57,6 +57,16 @@ Follow the [Microsoft Documentation](https://learn.microsoft.com/en-us/entra/ide
 
 <div align="center">
   <img src="https://github.com/mariocuomo/Sentinel-Cloud-Discovery-Connector/blob/main/img/apipermission.png"> </img>
+</div>
+
+<br>
+
+Generate a secret to be used later in the connector configuration.
+
+<br>
+
+
+<div align="center">
   <img src="https://github.com/mariocuomo/Sentinel-Cloud-Discovery-Connector/blob/main/img/secret.png"> </img>
 </div>
 
@@ -71,6 +81,10 @@ Obtain the Stream ID from the Microsoft Defender for Cloud Apps portal:
 1. Navigate to the Cloud Discovery report
 2. Select a data source from the top-right dropdown
 3. Copy the Stream ID from the URL
+
+<div align="center">
+  <img src="https://github.com/mariocuomo/Sentinel-Cloud-Discovery-Connector/blob/main/img/streamid.png"> </img>
+</div>
 
 ## Current Limitations
 
