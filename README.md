@@ -189,7 +189,5 @@ CloudDiscoveryData_CL
 
 ## Support & Version Information & License
 - Author: Mario Cuomo
-- Status: Production
-- This solution is provided as-is under the terms specified in the solution package.
-Codeless Connector Framework Documentation
-Microsoft Defender for Cloud Apps
+- Status: Evaluation
+- This solution is provided as-is under the terms specified in the solution package
