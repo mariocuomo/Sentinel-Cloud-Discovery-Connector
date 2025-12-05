@@ -55,6 +55,11 @@ Create an Enterprise Application (App Registration) in Microsoft Entra ID with t
 
 Follow the [Microsoft Documentation](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/add-application-portal) for detailed guidance on creating an Enterprise App.
 
+<div align="center">
+  <img src="https://github.com/mariocuomo/Sentinel-Cloud-Discovery-Connector/blob/main/img/apipermission.png"> </img>
+  <img src="https://github.com/mariocuomo/Sentinel-Cloud-Discovery-Connector/blob/main/img/secret.png"> </img>
+</div>
+
 ### 2. Microsoft Sentinel Workspace
 
 - An active Microsoft Sentinel workspace
