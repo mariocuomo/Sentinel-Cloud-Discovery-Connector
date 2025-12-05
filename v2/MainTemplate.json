@@ -431,6 +431,192 @@
       }
     },
     {
+      "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/',variables('_dataConnectorContentIdConnectorDefinition1'))]",
+      "apiVersion": "2022-09-01-preview",
+      "type": "Microsoft.OperationalInsights/workspaces/providers/dataConnectorDefinitions",
+      "location": "[parameters('workspace-location')]",
+      "kind": "Customizable",
+      "properties": {
+        "connectorUiConfig": {
+          "id": "MDACloudDiscoveryCCF",
+          "title": "MDA Cloud Discovery",
+          "publisher": "Mario Cuomo",
+          "descriptionMarkdown": "The MDA Cloud Discovery connector allows the user to ingest MDA Cloud Discovery data into Microsoft Sentinel using the CCF framework. It uses the Microsoft Defender for Cloud Apps Graph API (preview) to pull data.",
+          "graphQueriesTableName": "CloudDiscoveryData_CL",
+          "graphQueries": [
+            {
+              "metricName": "Total Cloud Discovery Events received",
+              "legend": "Cloud Discovery Events",
+              "baseQuery": "CloudDiscoveryData_CL"
+            }
+          ],
+          "sampleQueries": [
+            {
+              "description": "Get Sample of Cloud Discovery events",
+              "query": "{{graphQueriesTableName}}\n | take 10"
+            }
+          ],
+          "dataTypes": [
+            {
+              "name": "CloudDiscoveryData_CL",
+              "lastDataReceivedQuery": "CloudDiscoveryData_CL\n | where TimeGenerated > ago(7d) | summarize Time = max(TimeGenerated)\n | where isnotempty(Time)"
+            }
+          ],
+          "connectivityCriteria": [
+            {
+              "type": "HasDataConnectors"
+            }
+          ],
+          "availability": {
+            "isPreview": false
+          },
+          "permissions": {
+            "resourceProvider": [
+              {
+                "provider": "Microsoft.OperationalInsights/workspaces",
+                "permissionsDisplayText": "Read and Write permissions are required.",
+                "providerDisplayName": "Workspace",
+                "scope": "Workspace",
+                "requiredPermissions": {
+                  "write": true,
+                  "read": true,
+                  "delete": true
+                }
+              }
+            ]
+          },
+          "instructionSteps": [
+            {
+              "title": "STEP 1 - Create an Enterpise App in Entra ID",
+              "description": "Create an Enterprise App in Entra ID with the required API permissions to access the Microsoft Defender for Cloud Apps Graph API. Follow the [Microsoft Documentation](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/add-application-portal) for guidance on this step. The required API permission is _CloudApp-Discovery.Read.All_ (application type)."
+            },
+            {
+              "title": "STEP 2 - Add Stream Connections",
+              "description": "To enable the MDA Cloud Discovery connector for Microsoft Sentinel, click to add a stream, fill the form with your credentials, Stream ID and lookback period, then click to Connect.",
+              "instructions": [
+                {
+                  "type": "DataConnectorsGrid",
+                  "parameters": {
+                    "mapping": [
+                      {
+                        "columnName": "Stream ID",
+                        "columnValue": "properties.request.apiEndpoint"
+                      }
+                    ],
+                    "menuItems": [
+                      "DeleteConnector"
+                    ]
+                  }
+                },
+                {
+                  "type": "ContextPane",
+                  "parameters": {
+                    "isPrimary": true,
+                    "label": "Add stream",
+                    "title": "Add stream",
+                    "subtitle": "Add MDA Cloud Discovery stream",
+                    "contextPaneType": "DataConnectorsContextPane",
+                    "instructionSteps": [
+                      {
+                        "instructions": [
+                          {
+                            "type": "Textbox",
+                            "parameters": {
+                              "label": "Client ID",
+                              "placeholder": "Enter your Client ID",
+                              "type": "text",
+                              "name": "ClientId"
+                            }
+                          },
+                          {
+                            "type": "Textbox",
+                            "parameters": {
+                              "label": "Client Secret",
+                              "placeholder": "Enter your Client Secret",
+                              "type": "password",
+                              "name": "ClientSecret"
+                            }
+                          },
+                          {
+                            "type": "Textbox",
+                            "parameters": {
+                              "label": "Stream ID",
+                              "placeholder": "Enter your StreamID",
+                              "type": "text",
+                              "name": "streamid"
+                            }
+                          },
+                          {
+                            "type": "Dropdown",
+                            "parameters": {
+                              "label": "Select the lookback period for data ingestion",
+                              "name": "lookback",
+                              "options": [
+                                {
+                                  "key": "7",
+                                  "text": "7 Days"
+                                },
+                                {
+                                  "key": "30",
+                                  "text": "30 Days"
+                                },
+                                {
+                                  "key": "90",
+                                  "text": "90 Days"
+                                }
+                              ],
+                              "placeholder": "Select the lookback period for data ingestion",
+                              "isMultiSelect": false,
+                              "required": true,
+                              "defaultAllSelected": false
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/',concat('DataConnector-', variables('_dataConnectorContentIdConnectorDefinition1')))]",
+      "apiVersion": "2022-01-01-preview",
+      "type": "Microsoft.OperationalInsights/workspaces/providers/metadata",
+      "properties": {
+        "parentId": "[extensionResourceId(resourceId('Microsoft.OperationalInsights/workspaces', parameters('workspace')), 'Microsoft.SecurityInsights/dataConnectorDefinitions', variables('_dataConnectorContentIdConnectorDefinition1'))]",
+        "contentId": "[variables('_dataConnectorContentIdConnectorDefinition1')]",
+        "kind": "DataConnector",
+        "version": "[variables('dataConnectorCCPVersion')]",
+        "source": {
+          "sourceId": "[variables('_solutionId')]",
+          "name": "[variables('_solutionName')]",
+          "kind": "Solution"
+        },
+        "author": {
+          "name": "Mario Cuomo"
+        },
+        "support": {
+          "name": "Mario Cuomo",
+          "email": "test@example.com",
+          "tier": "Partner",
+          "link": "https://www.example.com"
+        },
+        "dependencies": {
+          "criteria": [
+            {
+              "version": "[variables('dataConnectorCCPVersion')]",
+              "contentId": "[variables('_dataConnectorContentIdConnections1')]",
+              "kind": "ResourcesDataConnector"
+            }
+          ]
+        }
+      }
+    },
+    {
       "type": "Microsoft.OperationalInsights/workspaces/providers/contentTemplates",
       "apiVersion": "2023-04-01-preview",
       "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/', variables('dataConnectorTemplateNameConnections1'), variables('dataConnectorCCPVersion'))]",
