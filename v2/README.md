@@ -250,18 +250,5 @@ If you are upgrading from v1 to v2:
 - **Version**: 2.0.0
 - **Status**: Evaluation
 - **License**: This solution is provided as-is under the terms specified in the solution package
-- **Changelog**:
-  - v2.0.0: Multi-stream support, enhanced stream management UI
-  - v1.0.0: Initial release with single-stream support
 
-## Additional Resources
-
-- [Microsoft Graph API - Cloud Discovery](https://learn.microsoft.com/en-us/graph/api/resources/security-clouddiscovery)
-- [Microsoft Sentinel Data Connectors](https://learn.microsoft.com/en-us/azure/sentinel/connect-data-sources)
-- [Codeless Connector Framework Documentation](https://learn.microsoft.com/en-us/azure/sentinel/create-codeless-connector)
-- [Microsoft Defender for Cloud Apps](https://learn.microsoft.com/en-us/defender-cloud-apps/)
-
-## Contributing
-
-For issues, questions, or contributions, please contact the solution author or submit feedback through the appropriate channels.
 
