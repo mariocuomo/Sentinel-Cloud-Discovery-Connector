@@ -1,5 +1,8 @@
 # Sentinel Cloud Discovery Connector
 
+## 10th December ATTENTION: THE CONNECTOR DOESN'T MANAGE THE PAGINATION, WILL BE IMPLEMENTED SOON
+
+
 ## Overview
 
 This solution provides a custom Sentinel Codeless Connector Framework (CCF) data connector that enables ingestion of Cloud Discovery data from Microsoft Defender for Cloud Apps into Microsoft Sentinel. The connector leverages the Microsoft Graph API (beta) to retrieve cloud app usage data and streams it into a custom Log Analytics table.
