@@ -1,7 +1,5 @@
 # Sentinel Cloud Discovery Connector
 
-## 10th December ATTENTION: THE CONNECTOR DOESN'T MANAGE THE PAGINATION, WILL BE IMPLEMENTED SOON
-
 
 ## Overview
 

@@ -147,7 +147,7 @@
                             "mapping": [
                               {
                                 "columnName": "Stream ID",
-                                "columnValue": "properties.request.apiEndpoint"
+                                "columnValue": "properties.addOnAttributes.streamId"
                               }
                             ],
                             "menuItems": [
@@ -275,6 +275,10 @@
                   "Custom-CloudDiscoveryData": {
                     "columns": [
                       {
+                        "name": "streamId",
+                        "type": "string"
+                      },
+                      {
                         "name": "id",
                         "type": "string"
                       },
@@ -362,6 +366,10 @@
                     {
                       "name": "TimeGenerated",
                       "type": "datetime"
+                    },
+                    {
+                      "name": "streamId",
+                      "type": "string"
                     },
                     {
                       "name": "id",
@@ -735,6 +743,9 @@
               "properties": {
                 "connectorDefinitionName": "MDACloudDiscoveryCCF",
                 "dataType": "CloudDiscoveryData_CL",
+                "addOnAttributes": {
+                  "streamId": "[[parameters('streamid')]"
+                },
                 "dcrConfig": {
                   "streamName": "Custom-CloudDiscoveryData",
                   "dataCollectionEndpoint": "[[parameters('dcrConfig').dataCollectionEndpoint]",
@@ -772,7 +783,11 @@
                   "eventsJsonPaths": [
                     "$.value"
                   ]
-                }
+                },                
+                "paging": {
+                    "pagingType": "NextPageUrl",
+                    "nextPageUrlJsonPath": "$.@odata.nextLink"
+                  }
               }
             }
           ]
