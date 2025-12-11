@@ -115,21 +115,14 @@ Edit `function-app/azuredeploy.parameters.json`:
 ### Step 3: Deploy Function App
 
 ```powershell
-# Create resource group for function app
-az group create --name rg-cloudappsync --location westeurope
+az functionapp function delete --name "func-cloudappsync"  --resource-group "apt29rg" --function-name SyncCloudAppsToSentinel
 
-# Deploy ARM template
-az deployment group create \
-  --resource-group rg-cloudappsync \
-  --template-file function-app/azuredeploy.json \
-  --parameters function-app/azuredeploy.parameters.json
+func azure functionapp publish func-cloudappsync
 
-# Deploy function code
-cd function-app
-func azure functionapp publish <your-function-app-name>
 ```
 
 ---
+
 
 
 
