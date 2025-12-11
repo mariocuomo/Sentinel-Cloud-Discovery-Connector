@@ -63,15 +63,17 @@ Deploy the Data Collection infrastructure to your Sentinel workspace
 </a>
 
 The `sentinel-config.json` ARM template deploys the following Microsoft Sentinel infrastructure components:
-- Data Collection Endpoint
-- Data Collection Rule
-- Two Log Analytics Workspace tables (`CloudApps_CL` and `CloudAppsUsers_CL`)
-- Sentinel watchlist (`CloudAppInfo`)
+- 1 Data Collection Endpoint
+- 1 Data Collection Rule
+- 2 Log Analytics Workspace tables (`CloudApps_CL` and `CloudAppsUsers_CL`)
+- 1 Sentinel watchlist (`CloudAppInfo`)
 
 
 **Note the outputs** from this deployment:
 - `dceEndpoint` - Data Collection Endpoint URL
 - `dcrImmutableId` - Data Collection Rule Immutable ID
+
+---
 
 
 ### Step 2: Configure Function App Parameters
@@ -380,3 +382,4 @@ This project is provided as-is under the MIT License.
 ## Support
 
 For issues, questions, or feature requests, please open an issue in this repository.
+
