@@ -1,6 +1,10 @@
 # Cloud App Discovery to Sentinel Connector
 
-An Azure Function-based connector that automatically syncs Cloud App Discovery data from Microsoft Defender for Cloud Apps (MDA) to Microsoft Sentinel custom tables and watchlist.
+An Azure Function-based connector that automatically syncs Cloud App Discovery data from Microsoft Defender for Cloud Apps (MDA) to Microsoft Sentinel custom tables and watchlist. <br>
+For now just an experiment, need to manage different things like:
+- better deployment approach
+- secure client secret!
+- define better the schedule of the Azure Function and lookback period for MDA api calls
 
 ## Overview
 
@@ -157,6 +161,7 @@ az deployment group create `
 ```powershell
 func azure functionapp publish func-cloudappsync
 ```
+
 
 
 
