@@ -57,19 +57,13 @@ Grant admin consent for all API permissions after creation.
 
 Deploy the Data Collection infrastructure to your Sentinel workspace:
 
-```powershell
-# Login to Azure
-az login
 
-# Set subscription
-az account set --subscription "YOUR_SUBSCRIPTION_NAME"
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmariocuomo%2FSentinel-Cloud-Discovery-Connector%2Frefs%2Fheads%2Fmain%2Fexpanded%2Fsentinel-config.json" target="_blank">
+<img src="https://aka.ms/deploytoazurebutton"/>
+</a>
 
-# Deploy Sentinel infrastructure (DCE, DCR, Custom Tables, Watchlist)
-az deployment group create \
-  --resource-group <your-sentinel-rg> \
-  --template-file function-app/sentinel-config.json \
-  --parameters workspaceName="<your-sentinel-workspace-name>"
-```
+
+
 
 **Note the outputs** from this deployment:
 - `dceEndpoint` - Data Collection Endpoint URL
