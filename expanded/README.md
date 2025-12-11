@@ -137,8 +137,7 @@ function-app/
 ├── azuredeploy.parameters.json
 ├── host.json
 ├── profile.ps1
-├── requirements.psd1
-└── sentinel-config.json
+└── requirements.psd1
 ```
 
 Maintain this exact directory structure when deploying to preserve the Function App's configuration and ensure proper execution of the timer-triggered function.
