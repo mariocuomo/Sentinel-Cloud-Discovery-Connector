@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "functionAppName": {
+      "value": "func-cloudappsync"
+    },
+    "tenantId": {
+      "value": "<YOUR-TENANT-ID>"
+    },
+    "clientId": {
+      "value": "<YOUR-CLIENT-ID>"
+    },
+    "clientSecret": {
+      "value": "<YOUR-CLIENT-SECRET>"
+    },
+    "mdaStreamIds": {
+      "value": "streamID1, streamID2"
+    },
+    "mdaPeriod": {
+      "value": "P7D"
+    },
+    "dceEndpoint": {
+      "value": "<YOUR-DCE-ENDPOINT>"
+    },
+    "dcrImmutableId": {
+      "value": "<YOUR-DCR-IMMUTABLE-ID>"
+    },
+    "workspaceId": {
+      "value": "<YOU-WORKSPACE-ID>"
+    },
+    "workspaceName": {
+      "value": "<YOUR-WORKSPACE-NAME>"
+    },
+    "watchlistAlias": {
+      "value": "CloudAppInfo"
+    },
+    "timerSchedule": {
+      "value": "0 0 * * * *"
+    }
+  }
+}

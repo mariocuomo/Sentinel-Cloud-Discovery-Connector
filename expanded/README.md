@@ -76,7 +76,6 @@ The `sentinel-config.json` ARM template deploys the following Microsoft Sentinel
   <img src="https://github.com/mariocuomo/Sentinel-Cloud-Discovery-Connector/blob/main/expanded/img/sentinel-config.png"> </img>
 </div>
 
-If you want read more about this template, read [here](https://github.com/mariocuomo/Sentinel-Cloud-Discovery-Connector/blob/main/expanded/README-SENTINEL-CONFIG.md).
 
 **Note the outputs** from this deployment:
 - `dceEndpoint` - Data Collection Endpoint URL
