@@ -68,6 +68,10 @@ The `sentinel-config.json` ARM template deploys the following Microsoft Sentinel
 - 2 Log Analytics Workspace tables (`CloudApps_CL` and `CloudAppsUsers_CL`)
 - 1 Sentinel watchlist (`CloudAppInfo`)
 
+<div align="center">
+  <img src="https://github.com/mariocuomo/Sentinel-Cloud-Discovery-Connector/blob/main/expanded/img/sentinel-config.png"> </img>
+</div>
+
 If you want read more about this template, read [here](https://github.com/mariocuomo/Sentinel-Cloud-Discovery-Connector/blob/main/expanded/README-SENTINEL-CONFIG.md).
 
 **Note the outputs** from this deployment:
@@ -383,5 +387,6 @@ This project is provided as-is under the MIT License.
 ## Support
 
 For issues, questions, or feature requests, please open an issue in this repository.
+
 
 
