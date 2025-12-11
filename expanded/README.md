@@ -142,14 +142,22 @@ function-app/
 
 Maintain this exact directory structure when deploying to preserve the Function App's configuration and ensure proper execution of the timer-triggered function.
 
+
+At this point, **deploy ARM template**
+
 ```powershell
-az functionapp function delete --name "func-cloudappsync"  --resource-group "apt29rg" --function-name SyncCloudAppsToSentinel
-
-func azure functionapp publish func-cloudappsync
-
+az deployment group create `
+  --resource-group rg-cloudappsync `
+  --template-file azuredeploy.json `
+  --parameters azuredeploy.parameters.json
 ```
 
----
+
+**Deploy the function**
+```powershell
+func azure functionapp publish func-cloudappsync
+```
+
 
 
 
