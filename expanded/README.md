@@ -55,14 +55,18 @@ Grant admin consent for all API permissions after creation.
 
 ### Step 1: Configure Sentinel Infrastructure
 
-Deploy the Data Collection infrastructure to your Sentinel workspace:
+Deploy the Data Collection infrastructure to your Sentinel workspace
 
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmariocuomo%2FSentinel-Cloud-Discovery-Connector%2Frefs%2Fheads%2Fmain%2Fexpanded%2Fsentinel-config.json" target="_blank">
 <img src="https://aka.ms/deploytoazurebutton"/>
 </a>
 
-
+The `sentinel-config.json` ARM template deploys the following Microsoft Sentinel infrastructure components:
+- Data Collection Endpoint
+- Data Collection Rule
+- Two Log Analytics Workspace tables (`CloudApps_CL` and `CloudAppsUsers_CL`)
+- Sentinel watchlist (`CloudAppInfo`)
 
 
 **Note the outputs** from this deployment:
