@@ -128,6 +128,7 @@ Edit `function-app/azuredeploy.parameters.json`:
 
 Upload all files to Azure Cloud Shell and ensure the folder structure matches the project exactly: `function-app/` at the root level containing `SyncCloudAppsToSentinel/` subfolder with `function.json` and `run.ps1`, along with `azuredeploy.json`, `azuredeploy.parameters.json`, `host.json`, `profile.ps1`, `requirements.psd1`, at the function-app level.
 
+```
 function-app/
 ├── SyncCloudAppsToSentinel/
 │   ├── function.json
@@ -138,6 +139,7 @@ function-app/
 ├── profile.ps1
 ├── requirements.psd1
 └── sentinel-config.json
+```
 
 Maintain this exact directory structure when deploying to preserve the Function App's configuration and ensure proper execution of the timer-triggered function.
 
