@@ -78,6 +78,14 @@ If you want read more about this template, read [here](https://github.com/marioc
 - `dceEndpoint` - Data Collection Endpoint URL
 - `dcrImmutableId` - Data Collection Rule Immutable ID
 
+<div align="center">
+  <img src="https://github.com/mariocuomo/Sentinel-Cloud-Discovery-Connector/blob/main/expanded/img/dcr.png"> </img>
+</div>
+<div align="center">
+  <img src="https://github.com/mariocuomo/Sentinel-Cloud-Discovery-Connector/blob/main/expanded/img/dce.png"> </img>
+</div>
+
+
 ---
 
 
@@ -387,6 +395,7 @@ This project is provided as-is under the MIT License.
 ## Support
 
 For issues, questions, or feature requests, please open an issue in this repository.
+
 
 
 
