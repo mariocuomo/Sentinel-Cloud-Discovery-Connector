@@ -94,6 +94,7 @@ If you want read more about this template, read [here](https://github.com/marioc
 <div align="center">
   <img src="https://github.com/mariocuomo/Sentinel-Cloud-Discovery-Connector/blob/main/expanded/img/watchlist.png"> </img>
 </div>
+
 ---
 
 
