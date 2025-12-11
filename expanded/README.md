@@ -21,11 +21,15 @@ The connector consists of:
 
 ### Data Flow
 
-1. Azure Function authenticates to Microsoft Graph API
-2. Retrieves cloud app discovery data from MDA streams
-3. Processes and enriches data with app information
-4. Uploads data to Sentinel via Logs Ingestion API using DCR
-5. Updates Sentinel Watchlist with detailed app metadata
+1. Azure Function authenticates to Microsoft Graph API (1)
+2. Retrieves cloud app discovery data from MDA streams (1)
+3. Processes and enriches data with app information (2)
+4. Uploads data to Sentinel via Logs Ingestion API using DCR (2)
+5. Updates Sentinel Watchlist with detailed app metadata (3)
+
+<div align="center">
+  <img src="https://github.com/mariocuomo/Sentinel-Cloud-Discovery-Connector/blob/main/expanded/img/generalschema.png"> </img>
+</div>
 
 ## Prerequisites
 
