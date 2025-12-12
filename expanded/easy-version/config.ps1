@@ -16,7 +16,6 @@ $ClientId = "<TO-INSERT>"
 $ClientSecret = "<TO-INSERT>"
 
 # Microsoft Defender for Cloud Apps (MDA)
-# To find Stream IDs, run: .\adhoc\Get-CloudAppDiscovery.ps1
 $MdaStreamIds = "<TO-INSERT>"  # Comma-separated if multiple
 $MdaPeriod = "P90D"  # P7D = 7 days, P30D = 30 days, P90D = 90 days
 
