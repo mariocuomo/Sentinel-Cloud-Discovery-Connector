@@ -152,9 +152,9 @@ Examples:
 ### MDA Period
 
 The data aggregation period for Cloud Discovery:
-- `P7D` - Last 7 days
+- `P7D` - Last 7 days (default)
 - `P30D` - Last 30 days
-- `P90D` - Last 90 days (default)
+- `P90D` - Last 90 days 
 
 
 ### Custom Tables
@@ -345,6 +345,7 @@ For issues or questions:
 ---
 
 **Last Updated:** December 2025
+
 
 
 
