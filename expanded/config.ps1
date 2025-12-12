@@ -20,7 +20,7 @@ $MdaStreamIds = "<YOUR-INFO>, <YOUR-INFO>"  # Comma-separated if multiple
 $MdaPeriod = "P90D"  # P7D = 7 days, P30D = 30 days, P90D = 90 days
 
 # Function App Schedule
-$TimerSchedule = "0 */5 * * * *"  # CRON: every hour (0 min, 0 hour, every day)
+$TimerSchedule = "0 0 0 * * *"  # CRON: daily at midnight
 # Other examples:
 # "0 */6 * * * *"   = every 6 hours
 # "0 0 */12 * * *" = every 12 hours
@@ -29,3 +29,4 @@ $TimerSchedule = "0 */5 * * * *"  # CRON: every hour (0 min, 0 hour, every day)
 # Custom Function App name (optional)
 # If empty, will be auto-generated
 $FunctionAppName = "func-cloudappsync"
+
