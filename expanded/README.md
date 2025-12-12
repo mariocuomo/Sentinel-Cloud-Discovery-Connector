@@ -318,7 +318,7 @@ When rotating the service principal secret:
 - Function timeout: 10 minutes (configurable)
 - DCR ingestion limits apply
 
-## Contributing
+
 ## Version History
 
 - **v1.0** - Initial release
@@ -345,6 +345,7 @@ For issues or questions:
 ---
 
 **Last Updated:** December 2025
+
 
 
 
