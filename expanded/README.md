@@ -339,10 +339,12 @@ For issues or questions:
 - **v1.0** - Initial release
   - Basic MDA to Sentinel sync
   - Automated deployment scripts
-  - Three custom tables support
+  - Two custom tables support
+  - One Sentinel latchlist
 
 ---
 
 **Last Updated:** December 2025
+
 
 
