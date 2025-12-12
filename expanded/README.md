@@ -2,6 +2,10 @@
 
 An automated Azure Function solution that synchronizes Cloud App Discovery data from Microsoft Defender for Cloud Apps (MDA) to Microsoft Sentinel custom tables using Data Collection Rules (DCR).
 
+<div align="center">
+  <img src="https://github.com/mariocuomo/Sentinel-Cloud-Discovery-Connector/blob/main/expanded/img/generalschema.png"> </img>
+</div>
+
 ## Overview
 
 This solution deploys an Azure Function App that periodically retrieves cloud application discovery data from Microsoft Defender for Cloud Apps and ingests it into Microsoft Sentinel. The data includes:
@@ -20,7 +24,7 @@ The solution consists of:
 4. **Custom Tables** - Two tables in Log Analytics/Sentinel:
    - `CloudApps_CL` - Application data with usage metrics and risk scores
    - `CloudAppsUsers_CL` - User activity data
-5. **Watchlist** - CloudAppInfo watchlist for compliance and security enrichment
+5. **Watchlist** - `CloudAppInfo` watchlist for compliance and security enrichment
 
 ## Prerequisites
 
@@ -53,7 +57,7 @@ $sp = New-AzADServicePrincipal -ApplicationId $app.AppId
 $secret = New-AzADAppCredential -ObjectId $app.Id
 
 # Grant API permissions (requires admin consent in Azure Portal)
-# Navigate to: Azure AD > App registrations > Your App > API permissions
+# Navigate to: Entra ID > App registrations > Your App > API permissions
 # Add: Microsoft Graph > Application permissions > CloudApp-Discovery.Read.All
 ```
 
@@ -152,7 +156,7 @@ The data aggregation period for Cloud Discovery:
 - `P30D` - Last 30 days
 - `P90D` - Last 90 days (default)
 
-### Custom Tables
+
 ### Custom Tables
 
 Data is ingested into these tables:
@@ -163,6 +167,7 @@ Data is ingested into these tables:
 | `CloudAppsUsers_CL` | User activity data including user identifier (email/UPN), app ID, and app display name |
 
 Additionally, a **watchlist** named `CloudAppInfo` is created containing extended compliance and security attributes (GDPR compliance, certifications, encryption details, etc.) that can be joined with the tables for enrichment.
+
 ## Usage
 
 ### Querying Data
@@ -336,14 +341,8 @@ For issues or questions:
   - Automated deployment scripts
   - Three custom tables support
 
-## References
-
-- [Microsoft Defender for Cloud Apps API](https://learn.microsoft.com/en-us/defender-cloud-apps/api-introduction)
-- [Azure Data Collection Rules](https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/data-collection-rule-overview)
-- [Microsoft Sentinel Custom Logs](https://learn.microsoft.com/en-us/azure/sentinel/connect-custom-logs-api)
-- [Azure Functions PowerShell](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-powershell)
-
 ---
 
 **Last Updated:** December 2025
+
 
