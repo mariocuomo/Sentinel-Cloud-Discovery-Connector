@@ -303,7 +303,7 @@ func azure functionapp publish <function-app-name>
 
 When rotating the service principal secret:
 
-1. Create new secret in Azure AD
+1. Create new secret in Entra ID
 2. Update Function App application settings:
    ```powershell
    az functionapp config appsettings set --name <function-app-name> `
