@@ -33,7 +33,7 @@ The solution consists of:
 
 ### Service Principal Setup
 
-Create an Azure AD App Registration with the following API permission:
+Create an Entra ID App Registration with the following API permission:
 
 - **CloudApp-Discovery.Read.All** (Microsoft Graph)
 
@@ -61,7 +61,7 @@ $secret = New-AzADAppCredential -ObjectId $app.Id
 
 Before deployment, collect:
 
-1. **Tenant ID** - Your Azure AD tenant ID
+1. **Tenant ID** - Your Entra ID tenant
 2. **Client ID** - Service Principal application ID
 3. **Client Secret** - Service Principal secret
 4. **Workspace ID** - Log Analytics workspace GUID
@@ -346,3 +346,4 @@ For issues or questions:
 ---
 
 **Last Updated:** December 2025
+
