@@ -17,7 +17,7 @@ $ClientSecret = "<YOUR-INFO>v"
 
 # Microsoft Defender for Cloud Apps (MDA)
 $MdaStreamIds = "<YOUR-INFO>, <YOUR-INFO>"  # Comma-separated if multiple
-$MdaPeriod = "P90D"  # P7D = 7 days, P30D = 30 days, P90D = 90 days
+$MdaPeriod = "P7D"  # P7D = 7 days, P30D = 30 days, P90D = 90 days
 
 # Function App Schedule
 $TimerSchedule = "0 0 0 * * *"  # CRON: daily at midnight
@@ -29,4 +29,5 @@ $TimerSchedule = "0 0 0 * * *"  # CRON: daily at midnight
 # Custom Function App name (optional)
 # If empty, will be auto-generated
 $FunctionAppName = "func-cloudappsync"
+
 
