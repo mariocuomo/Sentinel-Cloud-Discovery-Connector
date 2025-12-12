@@ -139,7 +139,7 @@ The automated deployment performs the following:
 
 ### Timer Schedule
 
-The function runs on a timer schedule defined by a CRON expression. Default is every hour.
+The function runs on a timer schedule defined by a CRON expression. Default is daily at midnight.
 
 **CRON Expression Format:** `{second} {minute} {hour} {day} {month} {day-of-week}`
 
@@ -345,6 +345,7 @@ For issues or questions:
 ---
 
 **Last Updated:** December 2025
+
 
 
 
