@@ -1,5 +1,9 @@
 # Sentinel Cloud Discovery Connector
 
+#### NOTE
+not still a suitable solution. Function Apps executions in Consumption Plan are limited for 10 minutes (at max). Not enough in a corporate environment.
+
+
 An automated Azure Function solution that synchronizes Cloud App Discovery data from Microsoft Defender for Cloud Apps (MDA) to Microsoft Sentinel custom tables using Data Collection Rules (DCR).
 
 <div align="center">
@@ -345,6 +349,7 @@ For issues or questions:
 ---
 
 **Last Updated:** December 2025
+
 
 
 
